@@ -136,8 +136,16 @@ public class FASTAReader {
 	 * pattern when one has been found to be different.
 	 */
 	private boolean compareImproved(byte[] pattern, int position) throws FASTAException {
-		// TODO
-		return false;
+		if (position + pattern.length > validBytes) {
+			throw new FASTAException("Pattern goes beyond the end of the file.");
+		}
+		boolean match = true;
+		for (int i = 0; i < pattern.length; i++) {
+			if (pattern[i] != content[position + i]) {
+				match = false; break;
+			}
+		}
+		return match;
 	}
 
 	/*
@@ -149,8 +157,19 @@ public class FASTAReader {
 	 * ones present in the indicated position.
 	 */
 	private int compareNumErrors(byte[] pattern, int position) throws FASTAException {
-		// TODO
-		return -1;
+		int numErrors = 0;
+		if (position + pattern.length > validBytes) {
+			throw new FASTAException("Pattern goes beyond the end of the file.");
+		}
+		boolean match = true;
+		for (int i = 0; i < pattern.length; i++) {
+			if (pattern[i] != content[position + i]) {
+				match = false;
+				numErrors++;
+			}
+		}
+
+		return numErrors;
 	}
 
 	/**
@@ -189,8 +208,17 @@ public class FASTAReader {
 	 *         pattern (with up to 1 errors) in the data.
 	 */
 	public List<Integer> searchSNV(byte[] pattern) {
-		// TODO
-		return null;
+		List<Integer> cadenaBuscadaErrors = new ArrayList<>();
+		try {
+			for(int i=0; i<validBytes - pattern.length; i++) {
+				if(compareNumErrors(pattern, i) <= 1) {
+					cadenaBuscadaErrors.add(i);
+				}
+			}}catch(FASTAException e) {
+				
+			}
+		
+		return cadenaBuscadaErrors;
 	}
 
 	public static void main(String[] args) {

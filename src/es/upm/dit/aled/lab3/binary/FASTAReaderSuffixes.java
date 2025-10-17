@@ -78,7 +78,14 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	 */
 	@Override
 	public List<Integer> search(byte[] pattern) {
-		// TODO
+		Suffix lo = suffixes[0];
+		Suffix hi = suffixes[suffixes.length-1];
+		boolean found = false;
+		int index = 0;
+		 for(int i=0; i<pattern.length; i++) {
+			 int m = pattern.length/2;
+			 Suffix posSuffix = suffixes[m];
+		 }
 		return null;
 	}
 
