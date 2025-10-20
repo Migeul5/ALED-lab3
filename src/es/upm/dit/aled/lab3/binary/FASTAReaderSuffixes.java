@@ -79,34 +79,37 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	 */
 	@Override
 	public List<Integer> search(byte[] pattern) {
-		Suffix lo = suffixes[0];
-		Suffix hi = suffixes[suffixes.length-1];
+		int lo = 0;
+		int hi = suffixes.length-1;
 		boolean found = false;
 		int index = 0;
 		List<Integer> results = new ArrayList<>();
-		for(int i=0; i<pattern.length; i++) {
-			 int m = (lo.suffixIndex+(hi.suffixIndex-lo.suffixIndex))/2;
-			 Suffix posSuffix = suffixes[m];
-			 if(pattern[index]==content[posSuffix.suffixIndex + index]) {
-				 index++;
-				 while(index==pattern.length) {
-					 results.add(posSuffix.suffixIndex);
-					 found=true;
-				 }
-			 }
-			 else if((pattern[index]<content[posSuffix.suffixIndex + index])) {
-				 index=0;
-				 hi = suffixes[m--];
-			 }
-			 else if((pattern[index]>content[posSuffix.suffixIndex + index])) {
-				 index=0;
-				 lo = suffixes[m++];
+		//for(int i=0; i<pattern.length; i++) {
+		do{
+			int m = (int) Math.floor(lo+(hi-lo)/2);
+			int posSuffix = suffixes[m].suffixIndex;
+			if(pattern[index]==content[posSuffix + index]) {
+				index++;
+				if(index==pattern.length) {
+					results.add(posSuffix);
+					found=true;
+				}
+			}
+			else if((pattern[index]<content[posSuffix + index])) {
+				index=0;
+				hi = m-1;
+			}
+			else if((pattern[index]>content[posSuffix + index])) {
+				index=0; 
+				lo = m+1;
 				 
-			 }
-			 while(found==true || (hi.suffixIndex-lo.suffixIndex)<=1) {
-				 break;
-			 }
-		 }
+			}
+			/*while(found==true || (hi-lo)<=1) {
+				break;
+			}*/
+		 //}
+		//return results;
+		}while(!found && (hi-lo)>1);	
 		return results;
 	}
 	
