@@ -85,7 +85,6 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		int index = 0;
 		int coincidencia = 0;
 		List<Integer> results = new ArrayList<>();
-		//for(int i=0; i<pattern.length; i++) {
 		do{
 			int m = (int) Math.floor(lo+(hi-lo)/2);
 			int posSuffix = suffixes[m].suffixIndex;
@@ -96,7 +95,6 @@ public class FASTAReaderSuffixes extends FASTAReader {
 					found=true;
 					coincidencia=m;
 				}
-				
 			}
 			else if((pattern[index]<content[posSuffix + index])) {
 				index=0;
